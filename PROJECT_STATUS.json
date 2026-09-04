@@ -1,0 +1,33 @@
+{
+  "ready_now": [
+    "Repository structure",
+    "README",
+    "Benchmark lock",
+    "Metric definitions",
+    "Verified local 3-model overall/category/detailed results",
+    "Model-centric local result files",
+    "GPT aggregate normalization",
+    "GPT model-centric reported files",
+    "Validation script",
+    "Report outline",
+    "Qwen pending area with existing summary/notebooks preserved"
+  ],
+  "later_qwen": [
+    "Obtain raw qwen_*_predictions.csv",
+    "Repair metadata join and rescore",
+    "Validate exactly 58,492 predictions",
+    "Promote Qwen into overall/category/detailed/by_model results"
+  ],
+  "later_gpt": [
+    "Confirm medium/low reasoning labels",
+    "Add exact prompt and inference settings",
+    "Add parser/invalid policy",
+    "Preferably add raw predictions or scoring notebook for independent audit"
+  ],
+  "publication_admin": [
+    "Add authors/affiliation",
+    "Choose license",
+    "Add final report PDF",
+    "Fill CITATION.cff from template"
+  ]
+}
