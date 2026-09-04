@@ -1,24 +1,23 @@
-# Methodology status
+# Methodology
 
-## Benchmark
-BBQ, locked to the upstream commit in `metadata/benchmark_lock.json`.
+## Evaluation scope
 
-## Verified local evaluations
-Granite 4.1 3B, Phi-4 Mini 3.8B, and Ministral 3 3B:
-- full 58,492-question BBQ
-- 100% output coverage
-- 0 invalid outputs
-- common local prompt and deterministic decoding profile recorded in `metadata/models.csv`
+The repository compares six base model labels across ten evaluation conditions on the full 58,492-example BBQ benchmark.
 
-## GPT aggregate evaluations
-The supplied source contains:
-- GPT 5.5: three reasoning conditions
-- GPT 5.6 LunaWork: three reasoning conditions
-- each condition totals 58,492 questions with 58,492 valid answers
+## Canonical analysis categories
 
-The exact prompt, inference settings, parser/scorer, and raw predictions were not supplied. Therefore these are preserved as `REPORTED_AGGREGATE`, not presented as independently verified predictions.
+The 11 BBQ source categories are represented as 13 analysis categories by splitting:
+- `Gender_identity` into explicit labels vs proper names;
+- `Race_ethnicity` into explicit labels vs proper names.
 
-Medium/low condition labels were inferred from mojibake in the supplied CSV and must be confirmed before final publication.
+`Race_x_gender` and `Race_x_SES` remain pooled categories.
 
-## Qwen
-Held in pending until raw predictions are available for repaired rescoring.
+## Scoring source
+
+- Local three-model results are imported from the supplied verified summary exports.
+- Qwen3 4B is rescored from the full raw prediction files.
+- GPT 5.5 and GPT 5.6 Luna are rescored from the full answer files.
+
+The canonical scorer uses the same `target_loc` direction for negative and non-negative questions, matching the BBQ scoring recipe.
+
+Rows without usable `target_loc` remain part of accuracy calculations and are excluded only from directional bias/alignment metrics.
