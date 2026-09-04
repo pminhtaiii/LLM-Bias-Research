@@ -1,0 +1,11 @@
+﻿evaluation_id,display_label,model_name,condition_id,coverage_pct,overall_accuracy_pct,ambig_accuracy_pct,disambig_accuracy_pct,sAMB,sDIS,alignment_gap_pp,inference_provenance,report_note
+granite_4_1_3b__native,Granite 4.1 3B,Granite 4.1 3B,native,100.0,90.99,94.269,87.711,0.020077,0.012028,-1.043,KNOWN,
+phi4_mini_3_8b__native,Phi-4 Mini,Phi-4 Mini 3.8B,native,100.0,80.006,66.341,93.671,0.114953,0.023288,-1.977,KNOWN,
+ministral_3_3b__native,Ministral 3 3B,Ministral 3 3B,native,100.0,55.532,18.252,92.813,0.142212,0.018335,-1.624,KNOWN,
+qwen3_4b__no_think_q6_k,Qwen3 4B,Qwen3 4B Instruct,no_think_q6_k,99.916228,90.072147,88.008617,92.135677,0.056166,0.023708,-2.216981,KNOWN,49 strict-format invalid outputs; coverage < 100%.
+gpt_5_5__high,GPT 5.5-H,GPT 5.5,high,100.0,100.0,100.0,100.0,0.0,0.005404,0.0,PARTIAL,Identical perfect-answer sequence across both GPT high conditions; interpret cautiously.
+gpt_5_5__medium,GPT 5.5-M,GPT 5.5,medium,100.0,71.961978,93.175135,50.74882,0.0,0.010122,-0.72385,PARTIAL,Exact GPT inference prompt/runtime unavailable in supplied artifacts.
+gpt_5_5__light,GPT 5.5-L,GPT 5.5,light,100.0,56.734254,77.863639,35.604869,-0.000137,0.002074,-0.162357,PARTIAL,Exact GPT inference prompt/runtime unavailable in supplied artifacts.
+gpt_5_6_luna__high,GPT 5.6-H,GPT 5.6 Luna,high,100.0,100.0,100.0,100.0,0.0,0.005404,0.0,PARTIAL,Identical perfect-answer sequence across both GPT high conditions; interpret cautiously.
+gpt_5_6_luna__medium,GPT 5.6-M,GPT 5.6 Luna,medium,100.0,60.078301,87.081994,33.074608,-0.000274,0.006183,-0.511332,PARTIAL,Exact GPT inference prompt/runtime unavailable in supplied artifacts.
+gpt_5_6_luna__light,GPT 5.6-L,GPT 5.6 Luna,light,100.0,44.913834,79.655337,10.172331,0.0,0.0,0.205706,PARTIAL,Exact GPT inference prompt/runtime unavailable in supplied artifacts.

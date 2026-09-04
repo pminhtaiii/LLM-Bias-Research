@@ -1,0 +1,17 @@
+\begin{table}[H]
+\centering
+\caption{Data-quality and provenance notes that affect interpretation.}
+\label{tab:data-quality}
+\small
+\begin{tabularx}{\textwidth}{p{0.16\textwidth} X X}
+\toprule
+Scope & Issue & Reporting treatment \\
+\midrule
+Qwen3 4B & 49 strict-format invalid outputs & Keep invalid; count as incorrect in accuracy. Coverage = 99.916\%. \\
+Qwen3 4B & Earlier aggregate was inflated by duplicate metadata rows & Use the 58,492-row raw prediction set and canonical benchmark index. \\
+GPT high & GPT 5.5-high and GPT 5.6-high are identical and perfect & Retain results but flag explicitly; avoid strong comparative claims. \\
+GPT 5.5 / 5.6 & Exact inference prompt/runtime unavailable & Scores are reproducible from supplied answer sequences, but inference provenance remains partial. \\
+BBQ metadata & 16 rows lack usable target\_loc & Keep for accuracy; exclude only from directional bias/alignment metrics. \\
+\bottomrule
+\end{tabularx}
+\end{table}

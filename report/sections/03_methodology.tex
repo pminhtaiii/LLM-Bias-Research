@@ -1,0 +1,25 @@
+\section{Experimental Methodology}
+\subsection{Models and inference conditions}
+The evaluation contains six base model labels across ten conditions. \Cref{tab:models} summarizes the available artifacts and inference provenance.
+
+\input{tables/table01_models.tex}
+
+Granite 4.1 3B, Phi-4 Mini 3.8B, and Ministral 3 3B used a common deterministic local multiple-choice protocol: temperature 0, top-$p=1$, seed 1234, maximum output length 384, context length 2048, Q4\_K\_M GGUF files, and a common llama.cpp runtime. The prompt instructed the model to use only the context and return exactly one of A, B, or C.
+
+Qwen3 4B Instruct used a Q6\_K GGUF file on Kaggle with \texttt{llama-cpp-python 0.3.35}, temperature 0, context length 2048, maximum output length 10, and \texttt{/no\_think}. Its parser accepted only an exact A/B/C after removing any thinking block and normalizing whitespace/case.
+
+For GPT 5.5 and GPT 5.6 Luna, complete answer sequences were supplied for \emph{high}, \emph{medium}, and \emph{light} conditions. Their exact inference prompt, provider/runtime, and sampling configuration were not present in the supplied artifacts. Therefore the scores are reproducible from the answer sequences, but the original inference process is not.
+
+\subsection{Canonical scoring and quality control}
+All outputs were aligned to a canonical 58,492-row benchmark index. Sixteen rows do not have usable \texttt{target\_loc}; they remain in accuracy calculations but are excluded from directional bias and alignment metrics. The benchmark source is locked to commit \texttt{bea11bd97d79217245b5871acd247b9d6eb24598} of the BBQ repository \citep{bbqgithub}.
+
+The three local-model results were imported from verified full-benchmark summary exports. Qwen3 4B was rescored from per-example predictions, and the GPT conditions were rescored from their complete answer sequences using the same canonical definitions.
+
+Qwen3 4B produced 49 strict-format invalid outputs; these were not post-hoc rescued and count as incorrect. An earlier Qwen aggregate contained 58,556 rows because of duplicated metadata; the canonical analysis uses the 58,492 unique raw predictions. The supplied GPT 5.5-high and GPT 5.6-Luna-high answer sequences are identical and perfectly match the benchmark gold answers, so they are retained only as audit-limited results.
+
+\FloatBarrier
+\input{tables/table04_data_quality.tex}
+\FloatBarrier
+
+\paragraph{Comparability.}
+The evaluated conditions were not produced under a single fully controlled inference stack. Cross-condition differences are therefore interpreted descriptively and should not be attributed solely to model architecture or intrinsic capability.

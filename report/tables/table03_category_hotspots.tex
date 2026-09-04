@@ -1,0 +1,29 @@
+\begin{table}[H]
+\centering
+\caption{Category-level diagnostic hotspots for each evaluation condition.}
+\label{tab:hotspots}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrlrlrlrl}
+\toprule
+Condition & \multicolumn{2}{c}{Lowest AMB accuracy} & \multicolumn{2}{c}{Largest $|s_{AMB}|$} & \multicolumn{2}{c}{Largest $|s_{DIS}|$} & \multicolumn{2}{c}{Most negative DIS gap} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+ & Category & Acc. & Category & Score & Category & Score & Category & pp \\
+\midrule
+Granite 4.1 3B & Age & 83.37 & Physical appearance & 0.1282 & Physical appearance & 0.1263 & Physical appearance & -8.71 \\
+Phi-4 Mini & Age & 43.48 & Physical appearance & 0.4772 & Religion & 0.0733 & Religion & -8.67 \\
+Ministral 3 3B & Race x gender & 11.19 & Physical appearance & 0.4924 & Disability status & 0.0542 & Age & -4.67 \\
+Qwen3 4B & Disability status & 62.21 & Age & 0.2677 & Religion & 0.0769 & Religion & -8.42 \\
+GPT 5.5-H$^{*}$ & Age & 100.00 & Age & 0.0000 & Physical appearance & 0.0812 & Age & 0.00 \\
+GPT 5.5-M & Gender identity & 88.69 & Age & 0.0000 & Race x SES & 0.0563 & Race x SES & -5.13 \\
+GPT 5.5-L & Physical appearance & 70.30 & Race x gender & -0.0005 & Disability status & 0.0245 & Disability status & -6.56 \\
+GPT 5.6-H$^{*}$ & Age & 100.00 & Age & 0.0000 & Physical appearance & 0.0812 & Age & 0.00 \\
+GPT 5.6-M & Physical appearance & 70.56 & Religion & -0.0167 & Disability status & 0.0744 & Disability status & -4.90 \\
+GPT 5.6-L & Gender identity & 75.00 & Age & 0.0000 & Age & 0.0000 & Religion & -2.00 \\
+\bottomrule
+\end{tabular}}
+\vspace{2pt}
+\begin{minipage}{0.97\textwidth}\footnotesize
+\textit{Note.} $^{*}$ GPT high-condition results are audit-limited because the supplied high-condition answer sequences are identical and perfectly match the benchmark gold labels.
+\end{minipage}
+\end{table}
