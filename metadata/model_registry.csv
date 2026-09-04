@@ -1,0 +1,11 @@
+evaluation_id,model_id,model_name,condition_id,source_type,scoring_status,inference_provenance,configuration
+granite_4_1_3b__native,granite_4_1_3b,Granite 4.1 3B,native,summary_export,VERIFIED_SUMMARY,KNOWN,llama.cpp b10588; GGUF Q4_K_M; temperature=0; top_p=1; seed=1234; max_tokens=384; ctx=2048
+phi4_mini_3_8b__native,phi4_mini_3_8b,Phi-4 Mini 3.8B,native,summary_export,VERIFIED_SUMMARY,KNOWN,llama.cpp b10588; GGUF Q4_K_M; temperature=0; top_p=1; seed=1234; max_tokens=384; ctx=2048
+ministral_3_3b__native,ministral_3_3b,Ministral 3 3B,native,summary_export,VERIFIED_SUMMARY,KNOWN,llama.cpp b10588; GGUF Q4_K_M; temperature=0; top_p=1; seed=1234; max_tokens=384; ctx=2048
+qwen3_4b__no_think_q6_k,qwen3_4b,Qwen3 4B Instruct,no_think_q6_k,raw_predictions,RESCORED,KNOWN,Qwen3-4B-Q6_K.gguf; Kaggle 2x Tesla T4; llama-cpp-python 0.3.35; n_gpu_layers=-1; n_ctx=2048; n_batch=512; temperature=0; max_tokens=10; /no_think
+gpt_5_5__high,gpt_5_5,GPT 5.5,high,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
+gpt_5_5__medium,gpt_5_5,GPT 5.5,medium,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
+gpt_5_5__light,gpt_5_5,GPT 5.5,light,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
+gpt_5_6_luna__high,gpt_5_6_luna,GPT 5.6 Luna,high,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
+gpt_5_6_luna__medium,gpt_5_6_luna,GPT 5.6 Luna,medium,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
+gpt_5_6_luna__light,gpt_5_6_luna,GPT 5.6 Luna,light,raw_answers,RESCORED,PARTIAL,Condition label available from supplied answer file; exact inference prompt/runtime/sampling settings not present in supplied files.
