@@ -1,0 +1,16 @@
+{
+  "benchmark": "BBQ: A Hand-Built Bias Benchmark for Question Answering",
+  "upstream_repository": "https://github.com/nyu-mll/BBQ",
+  "locked_commit": "bea11bd97d79217245b5871acd247b9d6eb24598",
+  "official_rows": 58492,
+  "canonical_key": [
+    "condition_id",
+    "source_file",
+    "example_id",
+    "question_index"
+  ],
+  "notes": [
+    "Accuracy and bias should be interpreted together.",
+    "16 official rows lack usable target_loc for directional bias metrics; retain for accuracy and exclude only where target direction is required."
+  ]
+}
