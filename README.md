@@ -23,44 +23,57 @@ Group evaluation of LLM behavior on **BBQ: A Hand-Built Bias Benchmark for Quest
 | GPT 5.6 Luna | medium | 100.000% | 60.078% | 87.082% | 33.075% | -0.000274 | 0.006183 | -0.511 pp |
 | GPT 5.6 Luna | light | 100.000% | 44.914% | 79.655% | 10.172% | 0.000000 | 0.000000 | 0.206 pp |
 
-Accuracy is computed over all attempted benchmark rows; invalid outputs count as incorrect. Bias metrics use valid target-scorable rows only.
+The authoritative values are in `results/overall_results.csv`; this README intentionally stays compact.
+
+Accuracy is computed over all attempted benchmark rows. Invalid outputs count as incorrect. Directional bias uses valid target-scorable rows.
 
 ## Repository structure
 
 ```text
-benchmark/                upstream reference; no duplicated full BBQ text
-metadata/                 benchmark index + model registry
-source_outputs/           one source file per base model
-results/                  overall, category, detailed, and by-model results
-scripts/                  build/validation entry points
-notebooks/                original Qwen/GPT notebooks that were actually supplied
-docs/                     methodology, metrics, protocols, QC, limitations
-report/                   report outline / later final report
+benchmark/              BBQ upstream reference and fetch instructions
+metadata/               compact benchmark index and model registry
+source_outputs/         one source file per base model
+results/                canonical result tables and by-model views
+scripts/                fetch, rebuild, and validation scripts
+notebooks/              original notebooks supplied by the group
+docs/                   methodology, metrics, protocols, QC, limitations
+report/                 final report location
 ```
 
-## Source provenance
+## Main result files
 
-- Granite 4.1 3B, Phi-4 Mini 3.8B, Ministral 3 3B: verified summary exports.
-- Qwen3 4B: full raw per-example predictions; rescored canonically.
-- GPT 5.5 / GPT 5.6 Luna: full answer sequences; rescored canonically. Exact inference prompt/runtime was not present in the supplied files.
+- `results/overall_results.csv` — one row per evaluation condition.
+- `results/category_results.csv` — condition × 13 analysis categories.
+- `results/detailed_results.csv` — condition × category × context × polarity.
+- `results/by_model/*.csv` — one convenience file per base model.
 
-## Important QC notes
+## Reproduce the result tables
 
-- Qwen3 4B has **49 strict-format invalid outputs**; coverage is below 100%.
-- The earlier Qwen 58,556-row summary was caused by **64 duplicated metadata rows**; the raw predictions themselves contain the correct 58,492 examples.
-- `GPT 5.5 / high` and `GPT 5.6 Luna / high` contain the same 58,492 answer sequence and both match the gold answers on every row. The results are retained, with this anomaly documented rather than explained without evidence.
-- The original GPT scoring notebook is preserved only as provenance. Canonical results use the common scoring definition documented in `docs/metrics.md`.
-
-## Validate
+The repository uses only the Python standard library.
 
 ```bash
+python scripts/build_results.py
 python scripts/validate_results.py
 ```
 
-## Benchmark text and answers
+To fetch the exact upstream BBQ checkout used by the project:
 
-The complete BBQ contexts, questions, answer choices, and gold labels should be obtained from the upstream BBQ repository at the locked commit rather than duplicated here. `metadata/benchmark_index.csv` contains only the compact fields required to align and score the supplied outputs.
+```bash
+python scripts/fetch_bbq.py
+```
 
-## Before final submission
+The full BBQ contexts, questions, answer choices, and gold labels are intentionally not duplicated here. They should be obtained from the locked upstream checkout.
 
-Add the group author names/affiliation, choose a repository license, and place the final report under `report/`.
+## Source provenance
+
+- **Granite 4.1 3B, Phi-4 Mini 3.8B, Ministral 3 3B**: verified full-BBQ summary exports.
+- **Qwen3 4B**: full 58,492-row per-example predictions and raw outputs; rescored into the canonical schema.
+- **GPT 5.5 / GPT 5.6 Luna**: complete answer sequences for high / medium / light conditions; rescored into the canonical schema.
+
+## Data-quality notes
+
+- Qwen3 4B contains **49 strict-format invalid outputs**. They remain invalid rather than being rescued.
+- The earlier inflated Qwen summary was caused by duplicate metadata rows, not duplicate raw predictions.
+- `GPT 5.5 / high` and `GPT 5.6 Luna / high` contain the same 58,492-answer sequence and both match the gold answer on every row. This is retained and documented as an audit limitation because the exact GPT inference prompt/runtime was not present in the supplied artifacts.
+
+See `docs/` for methodology, metric definitions, inference provenance, data quality, and limitations.
