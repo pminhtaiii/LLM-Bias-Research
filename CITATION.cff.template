@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this evaluation repository, please cite it and the original BBQ paper."
-title: "BBQ LLM Bias Evaluation"
-type: dataset
-authors:
-  - family-names: "TODO"
-    given-names: "TODO"
-repository-code: "TODO_GITHUB_URL"
-version: "0.1.0"
