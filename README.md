@@ -90,6 +90,3 @@ source_outputs/
 
 AUTHORS.md
     Project authorship information
-
-LICENSE_TODO.md
-    Current licensing status
