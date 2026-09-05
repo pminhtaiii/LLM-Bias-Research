@@ -1,33 +1,951 @@
-\documentclass[11pt,a4paper]{article}
-\input{metadata.tex}
-\input{preamble.tex}
+\documentclass[10pt,a4paper,twocolumn]{article}
 
+% =========================================================
+% BBQ / ACL-LIKE TWO-COLUMN FORMAT
+% Compile with pdfLaTeX
+% =========================================================
+
+% =========================================================
+% PAGE AND FONT
+% =========================================================
+\usepackage[
+    a4paper,
+    top=1.55cm,
+    bottom=1.8cm,
+    left=1.55cm,
+    right=1.55cm
+]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{microtype}
+
+% Two-column spacing
+\setlength{\columnsep}{0.62cm}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\linespread{0.96}
+
+% =========================================================
+% FLOAT SETTINGS
+% =========================================================
+\setcounter{topnumber}{2}
+\setcounter{dbltopnumber}{2}
+
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+
+\renewcommand{\floatpagefraction}{0.80}
+\renewcommand{\dblfloatpagefraction}{0.80}
+
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+
+% =========================================================
+% TABLES / FIGURES / MATH
+% =========================================================
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{dblfloatfix}
+
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+% =========================================================
+% LINKS AND REFERENCES
+% =========================================================
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage[round,authoryear]{natbib}
+
+\definecolor{linkblue}{RGB}{45,65,135}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    citecolor=linkblue,
+    urlcolor=linkblue,
+    pdftitle={Evaluating Social Bias in Large Language Models with BBQ}
+}
+
+% =========================================================
+% SECTION STYLE
+% =========================================================
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\large\bfseries}
+{\thesection}
+{0.55em}
+{}
+
+\titleformat{\subsection}
+{\normalfont\normalsize\bfseries}
+{\thesubsection}
+{0.45em}
+{}
+
+\titlespacing*{\section}
+{0pt}
+{1.25ex plus .2ex minus .1ex}
+{0.55ex}
+
+\titlespacing*{\subsection}
+{0pt}
+{1.0ex plus .2ex minus .1ex}
+{0.35ex}
+
+% =========================================================
+% CAPTION STYLE
+% =========================================================
+\captionsetup{
+    font=small,
+    labelfont=bf,
+    justification=justified,
+    singlelinecheck=false,
+    skip=4pt
+}
+
+% =========================================================
+% LISTS
+% =========================================================
+\setlist[itemize]{
+    leftmargin=1.25em,
+    topsep=0.2em,
+    itemsep=0.05em,
+    parsep=0pt
+}
+
+\setlist[enumerate]{
+    leftmargin=1.7em,
+    topsep=0.2em,
+    itemsep=0.15em,
+    parsep=0pt
+}
+
+% =========================================================
+% NO HEADER / FOOTER
+% =========================================================
+\pagestyle{empty}
+
+% =========================================================
+% CUSTOM COMMANDS
+% =========================================================
+\newcommand{\samb}{s_{\mathrm{AMB}}}
+\newcommand{\sdis}{s_{\mathrm{DIS}}}
+\newcommand{\unknown}{\textsc{Unknown}}
+
+% =========================================================
+% METADATA
+% =========================================================
+\newcommand{\ReportTitle}
+{Evaluating Social Bias in Large Language Models with BBQ}
+
+\newcommand{\ReportAuthors}
+{Duong Thuy Tram, Nguyen Ngoc Thien Phu, Pham Minh Tai}
+
+\newcommand{\AffilOne}
+{24521802, 24521361, 24521588}
+
+\newcommand{\Correspondence}
+{\texttt{\{24521802,24521361,24521588\}@gm.uit.edu.vn}}
+% =========================================================
+% DOCUMENT
+% =========================================================
 \begin{document}
 
-\begin{titlepage}
+\raggedbottom
+
+% =========================================================
+% TITLE BLOCK
+% =========================================================
+\twocolumn[
+\begin{@twocolumnfalse}
+
+{\fontsize{17}{19}\selectfont\bfseries
+\ReportTitle\par}
+
+\vspace{0.65em}
+
+{\fontsize{11}{13}\selectfont\bfseries
+\ReportAuthors\par}
+
+\vspace{0.75em}
+
+{\fontsize{9.5}{11}\selectfont
+\AffilOne\par}
+
+\vspace{0.55em}
+
+{\fontsize{9.5}{11}\selectfont\bfseries
+Correspondence:\ }
+{\fontsize{9.5}{11}\selectfont
+\Correspondence\par}
+
+\vspace{1.0em}
+
+\end{@twocolumnfalse}
+]
+
+% =========================================================
+% ABSTRACT
+% =========================================================
+\begin{center}
+    \bfseries Abstract
+\end{center}
+
+\vspace{-0.35em}
+
+{\small
+\noindent
+This report evaluates ten large language model (LLM) conditions on all
+58,492 question-answering instances in the Bias Benchmark for Question
+Answering (BBQ). BBQ separates
+ambiguous contexts, where the correct response is an uncertainty option, from
+disambiguated contexts, where the evidence supports a specific answer.
+
+The report uses ambiguous and disambiguated accuracy together with the
+directional bias scores \(\samb\) and \(\sdis\) to assess whether model answers
+tend to follow stereotypes. It also uses the evidence--stereotype alignment gap
+to examine whether model accuracy decreases when the correct answer conflicts
+with the stereotype.
+
+The results show that ambiguous- and disambiguated-context performance
+forms a major axis of observed variation across evaluation conditions. Granite 4.1 3B reaches 94.27\% ambiguous accuracy, while Phi-4 Mini
+and Ministral reach 66.34\% and 18.25\%, even though the latter two exceed 92\%
+disambiguated accuracy. Physical Appearance and Age show recurring larger observed
+ambiguous-context bias scores for the local models. Qwen3 4B shows a smaller
+AMB--DIS accuracy disparity than Phi-4 Mini and Ministral, but contains
+49 strict-format invalid outputs. Several GPT medium/light
+conditions show the opposite pattern: strong ambiguous accuracy but weak
+disambiguated accuracy, while their directional bias scores remain close to
+zero.
+
+Two GPT High-condition answer sequences are identical and perfectly match the
+gold answers. Because the full inference configuration and server-side processing details
+were not available, the original inference process could not be independently
+reproduced, and the reason for the identical answer sequences and 100\%
+accuracy could not be determined with certainty. Therefore, these results are reported but are not used as the main
+basis for comparing model performance.
+}
+
+% =========================================================
+% 1 INTRODUCTION
+% =========================================================
+\section{Introduction}
+
+Large language models can still produce responses that reflect social
+stereotypes, even when they perform well on conventional NLP benchmarks.
+
+In question answering, there are two main problems. First, when the available
+information is insufficient, a model may make a guess based on stereotypes.
+Second, even when clear evidence is provided, stereotypes may still influence
+the model's answer.
+
+The BBQ benchmark was created to examine these two problems using
+multiple-choice questions \citep{parrish2022bbq}. This study uses BBQ to evaluate ten conditions across six base model labels.
+
+The study focuses on three research questions:
+
+\begin{enumerate}
+
+    \item \textbf{RQ1:}
+    How does model performance differ between ambiguous and
+    disambiguated BBQ contexts?
+
+    \item \textbf{RQ2:}
+    How strongly do model responses align with the stereotype direction
+    measured by BBQ under ambiguous and disambiguated contexts?
+
+    \item \textbf{RQ3:}
+    Does accuracy change when disambiguating evidence conflicts with the
+    stereotype-aligned target?
+
+\end{enumerate}
+
+All 58,492 BBQ instances are used to evaluate the models based on accuracy,
+bias scores, results across different categories, and data quality.
+
+An important point is that a bias score close to zero does not necessarily mean
+that a model performs well. A model may still perform poorly when the
+information is insufficient or fail to follow the available evidence correctly.
+
+% =========================================================
+% 2 RELATED WORK
+% =========================================================
+\section{Related Work}
+
+\textbf{Measuring Bias in NLP.}
+BBQ frames social-bias evaluation as observable behavior in a controlled
+question-answering setting, rather than treating a bias score alone as a
+complete description of model behavior
+\citep{parrish2022bbq}.
+
+\textbf{Social Biases in Question Answering.}
+BBQ uses the answers that models actually choose in QA tasks to examine whether
+models rely on stereotypes when information is insufficient and whether
+stereotypes still influence their answers even when clear evidence is available
+\citep{parrish2022bbq}.
+
+\textbf{Evaluating Social Bias in LLMs with BBQ.}
+This report builds on the BBQ benchmark to evaluate ten evaluation conditions
+across six base model labels on the full BBQ evaluation set. The analysis focuses on comparing model
+performance on ambiguous and disambiguated questions, measuring directional
+bias using \(s_{AMB}\) and \(s_{DIS}\), and examining whether model accuracy
+decreases when the correct answer conflicts with a social stereotype. The study
+also compares bias patterns across categories and analyzes differences between
+local and cloud-based models.
+
+% =========================================================
+% 3 BBQ BENCHMARK
+% =========================================================
+\section{BBQ Benchmark}
+
+The evaluation uses all 58,492 BBQ question-answering instances. Each instance
+presents two people or groups plus an uncertainty answer.
+
+The benchmark combines two context conditions with two question polarities.
+
+% ---------------------------------------------------------
+\subsection{Context Conditions}
+
+\textbf{Ambiguous contexts.}
+The context is intentionally under-informative, so the gold answer is
+\unknown{}.
+
+\textbf{Disambiguated contexts.}
+The context provides enough evidence to identify the correct answer.
+
+% ---------------------------------------------------------
+\subsection{Question Polarity}
+
+Questions are either \textbf{negative} or \textbf{non-negative}.
+
+Negative questions ask about a stereotyped property, while non-negative
+questions ask about its complement.
+
+The public BBQ data contain 11 source categories. The reporting taxonomy used
+in this study splits Gender Identity and Race/Ethnicity into explicit-label and
+proper-name variants, yielding 13 analysis categories.
+
+% ---------------------------------------------------------
+\subsection{Evaluation Metrics}
+A response is treated as stereotype-aligned when the model selects the
+bias target for a negative question or the corresponding non-target for a
+non-negative question. The opposite response direction is treated as
+anti-biased. Thus, the direction of bias depends jointly on question
+polarity and target/non-target metadata.
+
+For valid, target-scorable ambiguous rows,
+
+\begin{equation}
+\samb =
+\frac{
+n_{\mathrm{biased}} - n_{\mathrm{anti}}
+}{
+N_{\mathrm{valid,target}}
+}.
+\end{equation}
+
+\unknown{} responses remain in the denominator and contribute zero.
+
+For disambiguated rows,
+
+\begin{equation}
+\sdis =
+2
+\frac{
+n_{\mathrm{biased}}
+}{
+n_{\mathrm{biased}} + n_{\mathrm{anti}}
+}
+- 1.
+\end{equation}
+
+Positive values indicate a greater tendency toward stereotype-aligned
+responses, while negative values indicate a greater tendency toward
+anti-biased responses.
+
+The report also uses
+
+\begin{equation}
+\Delta_{\mathrm{align}}
+=
+\mathrm{Acc}_{\mathrm{nonaligned}}
+-
+\mathrm{Acc}_{\mathrm{aligned}}.
+\end{equation}
+
+A negative value indicates lower disambiguated accuracy when the
+evidence-supported answer conflicts with the stereotype-aligned target.
+
+% =========================================================
+% 4 EXPERIMENTAL SETUP
+% =========================================================
+\section{Experimental Setup}
+
+% ---------------------------------------------------------
+\subsection{Models and Inference Conditions}
+
+\textbf{Local-model protocol.}
+Granite 4.1 3B, Phi-4 Mini 3.8B, and Ministral 3 3B used the same
+deterministic local multiple-choice protocol with temperature = 0,
+top-p = 1, seed = 1234, maximum output length = 384,
+context length = 2048, Q4\_K\_M GGUF files, and the
+\texttt{llama.cpp} runtime.
+
+The prompt instructed the models to use only the provided context and return
+exactly one answer: A, B, or C.
+
+\textbf{Qwen3 4B protocol.}
+Qwen3 4B Instruct used a Q6\_K GGUF file on Kaggle with
+\texttt{llama-cpp-python 0.3.35}, temperature = 0,
+context length = 2048, maximum output length = 10, and
+\texttt{/no\_think}. Its parser accepted only an exact A/B/C after removing
+any thinking block and normalizing whitespace and case.
+
+\textbf{Cloud-model conditions.}
+GPT 5.5 and GPT 5.6 Luna were evaluated under High, Medium, and Light
+conditions. Complete answer sequences were available, but the labels and
+server-side configurations are retained from supplied artifacts and are not
+fully documented as directly comparable inference settings.
+
+% ---------------------------------------------------------
+\subsection{Scoring and Data Quality}
+
+All outputs were aligned to a canonical 58,492-row benchmark index.
+
+Sixteen rows do not have usable \texttt{target\_loc}; they remain in accuracy
+calculations but are excluded from directional bias and alignment metrics.
+
+Qwen3 4B produced 49 strict-format invalid outputs. Under our strict
+protocol-compliance rule, these outputs were not rescued post-hoc and were
+counted as incorrect for accuracy evaluation.
+
+An earlier Qwen aggregate contained 58,556 rows because of duplicated metadata;
+the canonical analysis uses the 58,492 unique raw predictions.
+
+The GPT 5.5-High and GPT 5.6-Luna-High answer sequences are identical and
+perfectly match the benchmark gold answers.
+
+These results are retained but are not used as the main basis for model
+comparison.
+
+The accompanying repository provides the available prompts, scoring scripts,
+model metadata, benchmark lock, and derived result tables.
+
+% =========================================================
+% 5 RESULTS
+% =========================================================
+\section{Results}
+
+% ---------------------------------------------------------
+\subsection{Overall Accuracy}
+
+Table~\ref{tab:overall} reports the headline metrics.
+
+\textit{Note.}
+$^{*}$ denotes audit-limited GPT High conditions whose supplied answer
+sequences are identical and perfectly match the benchmark gold answers.
+Qwen3 4B contains 49 strict-format invalid outputs.
+
+As shown in Figure~\ref{fig:overall_accuracy}, the three local models differ
+most strongly in ambiguous-context behavior.
+
+Granite 4.1 3B reaches 94.27\% AMB accuracy, compared with 66.34\% for
+Phi-4 Mini and 18.25\% for Ministral 3 3B.
+
+Their DIS accuracies are much closer:
+87.71\%, 93.67\%, and 92.81\%, respectively.
+
+Ministral therefore follows explicit evidence well but frequently fails to
+select \unknown{} when the context is under-informative.
+
+Qwen3 4B shows a smaller AMB--DIS accuracy disparity, with 88.01\% AMB
+accuracy and 92.14\% DIS accuracy.
+
+GPT medium/light conditions show the opposite pattern. GPT 5.5-M reaches
+93.18\% AMB but 50.75\% DIS, while GPT 5.6-M and GPT 5.6-L reach
+87.08\%/33.07\% and 79.66\%/10.17\%, respectively.
+
+% ---------------------------------------------------------
+% TABLE 1 -- SMALL ONE-COLUMN TABLE
+% ---------------------------------------------------------
+\begin{table}[H]
+\centering
+
+\caption{Overall BBQ results. Accuracy and coverage are in percent; bias
+scores are on $[-1,1]$; Gap is in percentage points.}
+
+\label{tab:overall}
+
+\tiny
+\setlength{\tabcolsep}{1.7pt}
+\renewcommand{\arraystretch}{0.94}
+
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+
+\toprule
+
+\textbf{Cond.}
+&
+\textbf{Cov.}
+&
+\textbf{Ovr.}
+&
+\textbf{AMB}
+&
+\textbf{DIS}
+&
+\textbf{$\samb$}
+&
+\textbf{$\sdis$}
+&
+\textbf{Gap}
+\\
+
+\midrule
+
+Granite 4.1
+& 100.00 & 90.99 & 94.27 & 87.71 & 0.0201 & 0.0120 & -1.04 \\
+
+Phi-4 Mini
+& 100.00 & 80.01 & 66.34 & 93.67 & 0.1150 & 0.0233 & -1.98 \\
+
+Ministral 3
+& 100.00 & 55.53 & 18.25 & 92.81 & 0.1422 & 0.0183 & -1.62 \\
+
+Qwen3 4B
+& 99.92 & 90.07 & 88.01 & 92.14 & 0.0562 & 0.0237 & -2.22 \\
+
+GPT 5.5-H$^{*}$
+& 100.00 & 100.00 & 100.00 & 100.00 & 0.0000 & 0.0054 & 0.00 \\
+
+GPT 5.5-M
+& 100.00 & 71.96 & 93.18 & 50.75 & 0.0000 & 0.0101 & -0.72 \\
+
+GPT 5.5-L
+& 100.00 & 56.73 & 77.86 & 35.60 & -0.0001 & 0.0021 & -0.16 \\
+
+GPT 5.6-H$^{*}$
+& 100.00 & 100.00 & 100.00 & 100.00 & 0.0000 & 0.0054 & 0.00 \\
+
+GPT 5.6-M
+& 100.00 & 60.08 & 87.08 & 33.07 & -0.0003 & 0.0062 & -0.51 \\
+
+GPT 5.6-L
+& 100.00 & 44.91 & 79.66 & 10.17 & 0.0000 & 0.0000 & 0.21 \\
+
+\bottomrule
+
+\end{tabular}%
+}
+
+\end{table}
+
+% ---------------------------------------------------------
+% FIGURE 1 -- SMALL ONE-COLUMN FIGURE
+% ---------------------------------------------------------
+\begin{figure}[H]
     \centering
-    \vspace*{2.0cm}
-    {\LARGE\bfseries \ReportTitle\par}
-    \vspace{0.5cm}
-    {\Large \ReportSubtitle\par}
-    \vspace{1.6cm}
-    {\large \ReportAuthors\par}
-    \vspace{0.3cm}
-    {\normalsize \ReportAffiliation\par}
-    \vfill
-    {\large \ReportDate\par}
-\end{titlepage}
 
-\input{sections/00_abstract.tex}
-\input{sections/01_introduction.tex}
-\input{sections/02_background_bbq.tex}
-\input{sections/03_methodology.tex}
-\input{sections/04_results.tex}
-\input{sections/05_discussion.tex}
-\input{sections/06_limitations.tex}
-\input{sections/07_conclusion.tex}
+    \includegraphics[
+        width=0.88\columnwidth,
+        keepaspectratio
+    ]{fig01_accuracy_by_condition.png}
 
-\FloatBarrier
-\input{sections/08_references.tex}
+    \caption{
+    Overall, ambiguous (AMB), and disambiguated (DIS) BBQ accuracy
+    across the ten evaluation conditions.
+    }
 
+    \label{fig:overall_accuracy}
+\end{figure}
+
+% ---------------------------------------------------------
+\subsection{Bias Score}
+
+For the four conditions with documented local/Qwen inference procedures,
+overall ambiguous bias is positive:
+
+\begin{itemize}
+    \item Granite: +0.0201
+    \item Phi-4 Mini: +0.1150
+    \item Ministral: +0.1422
+    \item Qwen3 4B: +0.0562
+\end{itemize}
+
+\begin{figure*}[!t]
+    \centering
+
+    \includegraphics[
+        width=0.90\textwidth
+    ]{fig04_samb_heatmap.pdf}
+
+    \caption{
+    Category-level ambiguous-context directional bias
+    (\(\samb\)) across the ten evaluation conditions.
+    Positive values indicate greater stereotype-aligned selection,
+    while negative values indicate greater anti-target selection.
+    }
+
+    \label{fig:samb_heatmap}
+\end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+
+    \includegraphics[
+        width=0.90\textwidth
+    ]{fig05_sdis_heatmap.pdf}
+
+    \caption{
+    Category-level disambiguated-context directional bias
+    (\(\sdis\)) across the ten evaluation conditions.
+    Positive values indicate greater stereotype-aligned selection,
+    while negative values indicate greater anti-target selection.
+    }
+
+    \label{fig:sdis_heatmap}
+\end{figure*}
+
+As shown in Figure~\ref{fig:samb_heatmap}, Physical Appearance has the
+largest observed absolute \(\samb\) score for all three local models, and Age
+also shows relatively large observed values.
+
+A key counterexample is Ministral on Race $\times$ Gender:
+
+\[
+\mathrm{AMB\ Accuracy}=11.19\%,
+\qquad
+\samb \approx +0.0061.
+\]
+
+The near-zero directional score arises from cancellation between
+stereotype-aligned and anti-target guesses.
+
+This demonstrates why \(\samb\) must be interpreted together with AMB
+accuracy.
+
+For disambiguated contexts, Granite, Phi-4 Mini, Ministral, and Qwen3 4B have
+overall \(\sdis\) values of:
+
+\[
++0.0120,\quad
++0.0233,\quad
++0.0183,\quad
++0.0237.
+\]
+
+
+
+Figure~\ref{fig:sdis_heatmap} shows that disambiguated bias scores are
+generally smaller than ambiguous-context bias scores, although several
+category-level hotspots remain.
+
+% ---------------------------------------------------------
+\subsection{Evidence--Stereotype Alignment}
+
+The overall nonaligned-minus-aligned DIS gaps for Granite, Phi-4 Mini,
+Ministral, and Qwen3 4B are:
+
+\[
+-1.04,\quad
+-1.98,\quad
+-1.62,\quad
+-2.22
+\]
+
+percentage points.
+
+\begin{figure*}[!t]
+    \centering
+
+    \includegraphics[
+        width=0.80\textwidth
+    ]{fig06_alignment_gap.pdf}
+
+    \caption{
+    Observed disambiguated alignment gap across evaluation conditions.
+    The gap is calculated as nonaligned minus aligned DIS accuracy.
+    Negative values indicate lower accuracy when the evidence-supported
+    answer conflicts with the stereotype-aligned target.
+    }
+
+    \label{fig:alignment_gap}
+\end{figure*}
+
+As shown in Figure~\ref{fig:alignment_gap}, the overall gaps are negative
+for most evaluation conditions, although their magnitudes differ.
+
+Category-level effects can be larger.
+
+For example, Granite shows -8.71 points on Physical Appearance and Qwen3 4B
+shows -8.42 points on Religion.
+
+% ---------------------------------------------------------
+% TABLE 2
+% ---------------------------------------------------------
+\begin{table*}[!t]
+
+\centering
+
+\caption{
+Category-level diagnostic hotspots for each evaluation condition.
+}
+
+\label{tab:hotspots}
+
+\scriptsize
+
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.02}
+
+\begin{tabular}{l l r l r l r l r}
+
+\toprule
+
+\textbf{Condition}
+&
+\multicolumn{2}{c}{\textbf{Lowest AMB accuracy}}
+&
+\multicolumn{2}{c}{\textbf{Largest $|\samb|$}}
+&
+\multicolumn{2}{c}{\textbf{Largest $|\sdis|$}}
+&
+\multicolumn{2}{c}{\textbf{Most negative DIS gap}}
+\\
+
+\cmidrule(lr){2-3}
+\cmidrule(lr){4-5}
+\cmidrule(lr){6-7}
+\cmidrule(lr){8-9}
+
+&
+Category
+&
+Acc.
+&
+Category
+&
+Score
+&
+Category
+&
+Score
+&
+Category
+&
+pp
+\\
+
+\midrule
+
+Granite 4.1 3B
+& Age & 83.37
+& Physical appearance & 0.1282
+& Physical appearance & 0.1263
+& Physical appearance & -8.71
+\\
+
+Phi-4 Mini
+& Age & 43.48
+& Physical appearance & 0.4772
+& Religion & 0.0733
+& Religion & -8.67
+\\
+
+Ministral 3 3B
+& Race x gender & 11.19
+& Physical appearance & 0.4924
+& Disability status & 0.0542
+& Age & -4.67
+\\
+
+Qwen3 4B
+& Disability status & 62.21
+& Age & 0.2677
+& Religion & 0.0769
+& Religion & -8.42
+\\
+
+GPT 5.5-H$^{*}$
+& Age & 100.00
+& All tied & 0.0000
+& Physical appearance & 0.0812
+& Age & 0.00
+\\
+
+GPT 5.5-M
+& Gender identity & 88.69
+& Age & 0.0000
+& Race x SES & 0.0563
+& Race x SES & -5.13
+\\
+
+GPT 5.5-L
+& Physical appearance & 70.30
+& Race x gender & -0.0005
+& Disability status & 0.0245
+& Disability status & -6.56
+\\
+
+GPT 5.6-H$^{*}$
+& Age & 100.00
+& All tied & 0.0000
+& Physical appearance & 0.0812
+& Age & 0.00
+\\
+
+GPT 5.6-M
+& Physical appearance & 70.56
+& Religion & -0.0167
+& Disability status & 0.0744
+& Disability status & -4.90
+\\
+
+GPT 5.6-L
+& Gender identity & 75.00
+& All tied & 0.0000
+& All tied & 0.0000
+& Religion & -2.00
+\\
+
+\bottomrule
+
+\end{tabular}
+
+\end{table*}
+
+These alignment effects are descriptive only.
+
+This study does not compute confidence intervals or formal significance tests.
+
+% =========================================================
+% 6 DISCUSSION
+% =========================================================
+\section{Discussion}
+
+\textbf{AMB--DIS Performance.}
+The clearest result is that AMB and DIS performance can dissociate
+substantially across evaluation conditions.
+
+Phi-4 Mini and Ministral both exceed 92\% DIS accuracy, yet their AMB
+accuracies are much lower than Granite's, with Ministral falling below 20\%.
+
+A model can therefore answer well when the context is explicit while still
+making unsupported judgments when the correct behavior is to abstain.
+
+\textbf{Interpretation of Bias Scores.}
+Directional bias scores cannot be interpreted alone.
+
+Ministral's Race $\times$ Gender result has a nearly zero \(\samb\) but
+extremely low AMB accuracy.
+
+Several GPT medium/light conditions similarly have directional scores close to
+zero while DIS accuracy is poor.
+
+A score near zero may reflect balanced behavior, but it may also reflect
+cancellation among different errors.
+
+\textbf{Category-Level Effects.}
+Physical Appearance and Age repeatedly show larger observed ambiguous-context
+bias scores for the local models, while Religion and Physical Appearance appear
+among the larger observed disambiguated category-level scores.
+
+\textbf{GPT High Conditions.}
+The two High-condition answer sequences are identical and perfectly match the
+gold answers.
+
+Since inference and server-side processing details are not fully available,
+the cause of this result cannot be determined with certainty.
+
+Accordingly, these conditions are reported but are not used as the primary
+basis for comparative claims.
+
+% =========================================================
+% 7 LIMITATIONS
+% =========================================================
+\section{Limitations}
+
+First, BBQ measures stereotype-sensitive question answering in U.S.
+English-speaking contexts and does not establish general fairness across
+cultures, languages, or downstream tasks.
+
+Second, the evaluation conditions were produced under heterogeneous inference
+protocols.
+
+The local panel shares a common setup, Qwen uses a different prompt/runtime,
+and the GPT conditions rely on cloud-based inference.
+
+Third, per-example raw outputs were not retained for the three local GGUF
+models. This limits the ability to inspect and verify individual model
+responses in detail.
+
+Fourth, the GPT High answer sequences are identical and gold-perfect. Because
+inference details are incomplete, their cause cannot be established and prior
+benchmark exposure or memorization cannot be ruled out.
+
+Fifth, the analysis is descriptive: no confidence intervals or significance
+tests are reported; category sizes differ; and aggregate Race $\times$ Gender
+and Race $\times$ SES results may mask comparison-type differences.
+
+% =========================================================
+% 8 CONCLUSION
+% =========================================================
+\section{Conclusion}
+
+Across ten LLM conditions, AMB and DIS performance vary substantially. Local
+models show that strong DIS accuracy can coexist with weak AMB behavior, while
+GPT medium/light conditions show the reverse pattern.
+
+Physical Appearance and Age show larger observed ambiguous-context bias scores,
+while category-level alignment gaps reveal localized effects.
+
+BBQ should therefore be interpreted jointly through \textbf{AMB/DIS accuracy,
+\(s_{\mathrm{AMB}}\), \(s_{\mathrm{DIS}}\), and \(\Delta_{\mathrm{align}}\)}:
+near-zero bias does not ensure appropriate AMB behavior, and high accuracy does
+not rule out stereotype sensitivity.
+
+
+% =========================================================
+% REFERENCES
+% =========================================================
+
+{\footnotesize
+
+\begin{thebibliography}{9}
+
+\bibitem[Parrish et al.(2022)]{parrish2022bbq}
+A. Parrish, A. Chen, N. Nangia, V. Padmakumar, J. Phang,
+J. Thompson, P. M. Htut, and S. R. Bowman,
+``BBQ: A Hand-Built Bias Benchmark for Question Answering,''
+in \textit{Findings of the Association for Computational Linguistics:
+ACL 2022}, pp. 2086--2105, 2022.
+doi: 10.18653/v1/2022.findings-acl.165.
+
+\bibitem[Parrish et al.(2022)]{bbqgithub}
+A. Parrish et al.,
+``Bias Benchmark for Question Answering (BBQ),''
+GitHub repository.
+\url{https://github.com/nyu-mll/BBQ}.
+
+\end{thebibliography}
+
+}
 \end{document}
